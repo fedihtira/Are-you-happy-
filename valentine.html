@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bob the Snail 💕</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Comic Sans MS", "Arial Rounded MT Bold", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(180deg, #ffd6e8, #ffb6d5);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* WAY bigger & floatier hearts + spirals */
+    .decor {
+      position: absolute;
+      font-size: 48px;
+      opacity: 0.75;
+      animation: float 14s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-70px) translateX(30px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* Bob the Snail – plain, no expressions */
+    .snail {
+      position: absolute;
+      font-size: 56px;
+      animation: snailFloat 26s linear infinite;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes snailFloat {
+      0% { left: -80px; top: 35%; }
+      50% { top: 65%; }
+      100% { left: 110%; top: 40%; }
+    }
+
+    .card {
+      background: #fff0f7;
+      border-radius: 24px;
+      padding: 30px 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 26px;
+      color: #ff4f9a;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #ff77b7;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .photo {
+      width: 100%;
+      max-width: 260px;
+      margin: 15px auto;
+      border-radius: 20px;
+      border: 4px solid #ffb6d5;
+      box-shadow: 0 8px 20px rgba(255, 95, 162, 0.3);
+      display: block;
+    }
+
+    .buttons {
+      position: relative;
+      height: 120px;
+      margin-top: 10px;
+    }
+
+    button {
+      font-size: 18px;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 26px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    #yes {
+      background: #ff5fa2;
+      color: white;
+    }
+
+    #no {
+      background: #b3d1ff;
+      color: #003366;
+      position: absolute;
+      left: 50%;
+      top: 60px;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+
+<body>
+
+  <audio id="song" loop>
+    <source src="oursong.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Equal number of hearts and spirals
+    const hearts = ["💖", "💗", "💞"];
+    const spirals = ["🌀", "💙"];
+    const pairs = 12; // total will be pairs * 2
+
+    for (let i = 0; i < pairs; i++) {
+      // heart
+      const h = document.createElement("div");
+      h.className = "decor";
+      h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.top = Math.random() * 100 + "vh";
+      h.style.animationDuration = 10 + Math.random() * 8 + "s";
+      document.body.appendChild(h);
+
+      // spiral
+      const s = document.createElement("div");
+      s.className = "decor";
+      s.textContent = spirals[Math.floor(Math.random() * spirals.length)];
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.top = Math.random() * 100 + "vh";
+      s.style.animationDuration = 10 + Math.random() * 8 + "s";
+      document.body.appendChild(s);
+    }
+  </script>
+
+  <!-- Bob the Snail -->
+  <div class="snail">🐌</div>
+
+  <div class="card" onclick="startMusic()">
+    <h1>Will you be my Valentine?</h1>
+    <img src="us.jpg" alt="Us 💕" class="photo" />
+    <div class="subtitle">Bob the snail believes in us 🐌💘</div>
+
+    <div class="buttons">
+      <button id="yes" onclick="sayYes()">Yes 💕</button>
+      <button id="no">No</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const song = document.getElementById("song");
+    let musicStarted = false;
+
+    function startMusic() {
+      if (!musicStarted) {
+        song.play().catch(() => {});
+        musicStarted = true;
+      }
+    }
+
+    function moveNo() {
+      const card = document.querySelector(".card");
+      const maxX = card.clientWidth - noBtn.offsetWidth;
+      const maxY = 100;
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
+    }
+
+    noBtn.addEventListener("touchstart", moveNo);
+    noBtn.addEventListener("mouseover", moveNo);
+
+    function sayYes() {
+      document.querySelector(".card").innerHTML = `
+        <h1>💖💖💖</h1>
+        <img src="us.jpg" alt="Us forever 💕" class="photo" />
+        <p style="font-size:22px;color:#ff4f9a;">
+          for valentines until the end of time
+        </p>
+        <div style="font-size:56px;margin-top:10px;">🐌💕</div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
